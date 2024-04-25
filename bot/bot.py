@@ -11,8 +11,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 
 class Matrixine(commands.Bot):
-    def __init__(self, TOKEN: str):
-        self.TOKEN = TOKEN
+    def __init__(self):
         self.COLOR = 0x1EACC4
         self.OWNER_ID = [901689854411300904]
         self.OWNER_USERNAME = "zettabitep"
@@ -52,7 +51,7 @@ class Matrixine(commands.Bot):
 
     def run(self, **kwargs):
         self.log("Running Bot...")
-        super().run(self.TOKEN, reconnect=True)
+        super().run(token=kwargs["token"], reconnect=True)
 
     async def close(self):
         self.log("Closing connection to Discord...")
