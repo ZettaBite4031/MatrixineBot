@@ -2,6 +2,7 @@ import io
 import typing as t
 import random as r
 import datetime as dt
+from urllib.parse import quote
 
 import discord
 import requests
@@ -79,7 +80,11 @@ class Avatar(commands.Cog):
             await ctx.send("Here is your sorted profile!",
                            file=discord.File(fp=img_bin, filename="image.txt"))
 
-    @commands.command(name="blur", description="Blurs the user's profile picture.")
+    @commands.group(name="avatar")
+    async def avatar_command_group(self, ctx, target: t.Optional[discord.Member]):
+        pass
+
+    @avatar_command_group.command(name="blur", description="Blurs the user's profile picture.")
     async def blur_avatar_command(self, ctx: commands.Context, target: t.Optional[discord.Member]):
         if target is None:
             target = ctx.author
@@ -93,7 +98,7 @@ class Avatar(commands.Cog):
                             f"{target.avatar.replace(format='png', size=1024)}")
         await ctx.send(embed=embed)
 
-    @commands.command(name="pixelate", description="Pixelates the user's profile picture.")
+    @avatar_command_group.command(name="pixelate", description="Pixelates the user's profile picture.")
     async def pixelate_command(self, ctx, target: t.Optional[discord.Member]):
         if not target:
             target = ctx.author
@@ -107,7 +112,7 @@ class Avatar(commands.Cog):
                 f"{target.avatar.replace(format='png', size=1024)}")
         await ctx.send(embed=embed)
 
-    @commands.command(name="simp", aliases=["simpcard"], description="Calls the mentioned a user a simp.")
+    @avatar_command_group.command(name="simp", aliases=["simpcard"], description="Calls the mentioned a user a simp.")
     async def simpcard_avatar_command(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -120,7 +125,7 @@ class Avatar(commands.Cog):
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/simpcard?avatar={target.avatar.url}")
         await ctx.send(embed=embed)
 
-    @commands.command(name="horny", description="Proves the mentioned user is a horny bastard.")
+    @avatar_command_group.command(name="horny", description="Proves the mentioned user is a horny bastard.")
     async def horny_avatar_command(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -133,7 +138,7 @@ class Avatar(commands.Cog):
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/horny?avatar={target.avatar.url}")
         await ctx.send(embed=embed)
 
-    @commands.command(name="Lolice", description="Call the loli police on a user.")
+    @avatar_command_group.command(name="Lolice", description="Call the loli police on a user.")
     async def lolice_avatar_command(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -146,7 +151,7 @@ class Avatar(commands.Cog):
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/lolice?avatar={target.avatar.url}")
         await ctx.send(embed=embed)
 
-    @commands.command(name="gay-bg", description="Adds a gay border to a user's profile picture.")
+    @avatar_command_group.command(name="gay-bg", description="Adds a gay border to a user's profile picture.")
     async def pixelate_avatar_command(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -159,7 +164,7 @@ class Avatar(commands.Cog):
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/lgbt?avatar={target.avatar.url}")
         await ctx.send(embed=embed)
 
-    @commands.command(name="pansexual-bg", description="Adds a pansexual border to a user's profile picture.")
+    @avatar_command_group.command(name="pansexual-bg", description="Adds a pansexual border to a user's profile picture.")
     async def pan_the_avatar_command(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -172,7 +177,7 @@ class Avatar(commands.Cog):
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/pansexual?avatar={target.avatar.url}")
         await ctx.send(embed=embed)
 
-    @commands.command(name="nonbinary-bg", description="Adds a nonbinary border to a user's profile picture.")
+    @avatar_command_group.command(name="nonbinary-bg", description="Adds a nonbinary border to a user's profile picture.")
     async def nonbinary_avatar_command(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -185,7 +190,7 @@ class Avatar(commands.Cog):
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/nonbinary?avatar={target.avatar.url}")
         await ctx.send(embed=embed)
 
-    @commands.command(name="lesbian-bg", description="Adds a lesbian border to a user's profile picture.")
+    @avatar_command_group.command(name="lesbian-bg", description="Adds a lesbian border to a user's profile picture.")
     async def lesbian_avatar_command(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -199,7 +204,7 @@ class Avatar(commands.Cog):
             url=f"https://some-random-api.com/canvas/misc/lesbian?avatar={target.avatar.url}")
         await ctx.send(embed=embed)
 
-    @commands.command(name="bisexual-bg", description="Adds a bisexual border to a user's profile picutre.")
+    @avatar_command_group.command(name="bisexual-bg", description="Adds a bisexual border to a user's profile picutre.")
     async def bisexual_avatar_command(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -212,7 +217,7 @@ class Avatar(commands.Cog):
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/bisexual?avatar={target.avatar.url}")
         await ctx.send(embed=embed)
 
-    @commands.command(name="trans-bg", description="Adds a trans border to a user's profile picture.")
+    @avatar_command_group.command(name="trans-bg", description="Adds a trans border to a user's profile picture.")
     async def transgender_avatar_command(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -223,6 +228,113 @@ class Avatar(commands.Cog):
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/transgender")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/transgender?avatar={target.avatar.url}")
+        await ctx.send(embed=embed)
+
+    @avatar_command_group.command(name="circle", description="Crops the avatar to a circle")
+    async def crop_circle_avatar_command(self, ctx, target: t.Optional[discord.User]):
+        target = target or ctx.author
+        embed = discord.Embed(title="Snip! Cropped to a circle!",
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="API: some-random-api.com/canvas/misc/circle")
+        embed.set_image(url=f"https://some-random-api.com/canvas/misc/circle?avatar={target.avatar.url}")
+        await ctx.send(embed=embed)
+
+    @avatar_command_group.command(name="stupid", description="Someone's kinda stupid..")
+    async def its_so_stupid_avatar_command(self, ctx, target: t.Optional[discord.Member]):
+        target = target or ctx.author
+        embed = discord.Embed(title="It's so stupid!",
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="API: some-random-api.com/canvas/misc/its-so-stupid")
+        embed.set_image(url=f"https://some-random-api.com/canvas/misc/its-so-stupid?avatar={target.avatar.url}")
+        await ctx.send(embed=embed)
+
+    # @avatar_command_group.command(name="liar", description="Liar")
+    async def its_so_stupid_avatar_command(self, ctx, target: t.Optional[discord.Member]):
+        target = target or ctx.author
+        embed = discord.Embed(title="Liar!",
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        url = (f"https://some-random-api.com/canvas/misc/lied?avatar={target.avatar.url}"
+               f"&username={target.name}").replace(" ", "-")
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="API: some-random-api.com/canvas/misc/lied")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+    @avatar_command_group.command(name="genshin", description="Target is a genshin player")
+    async def genshin_namecard_avatar_command(self, ctx, target: t.Optional[discord.Member]):
+        target = target or ctx.author
+        url = (f"https://some-random-api.com/canvas/misc/namecard?avatar={target.avatar.url}"
+               f"&birthday={target.created_at.strftime('%Y/%m/%d %H:%M:%S')}&username={target.name}")
+        embed = discord.Embed(title="Gayshit Infact",
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="API: some-random-api.com/canvas/misc/namecard")
+        embed.set_image(url=url.replace(" ", "%20"))
+        await ctx.send(embed=embed)
+
+    # @avatar_command_group.command(name="spin", description="You spin me right round baby right round")
+    async def genshin_namecard_avatar_command(self, ctx, target: t.Optional[discord.Member]):
+        target = target or ctx.author
+        url = f"https://some-random-api.com/canvas/misc/spin?avatar={target.avatar.url}"
+        embed = discord.Embed(title="Spin",
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="API: some-random-api.com/canvas/misc/spin")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+    @avatar_command_group.command(name="DVD", description="Scene from Tonikawa")
+    async def tonikawa_scene_avatar_command(self, ctx, target: t.Optional[discord.Member]):
+        target = target or ctx.author
+        url = f"https://some-random-api.com/canvas/misc/tonikawa?avatar={target.avatar.url}"
+        embed = discord.Embed(title="D V D",
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="API: some-random-api.com/canvas/misc/tonikawa")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+    @avatar_command_group.command(name="tweet", description="What has this user tweeted?")
+    async def tweet_avatar_command(self, ctx, target: discord.Member, *, comment: str):
+        print(target)
+        url = f"https://some-random-api.com/canvas/tweet"
+        url += f"?avatar={quote(target.avatar.url)}"
+        url += f"&comment={quote(comment)}"
+        url += f"&displayname={quote(target.display_name)}"
+        url += f"&username={quote(target.name)}"
+        url += f"&replies={r.randint(-1, 1000)}"
+        url += f"&likes={r.randint(-1, 100000)}"
+        url += f"&retweets={r.randint(-1, 50000)}"
+        url += f"&theme={r.choice(['light', 'dim', 'dark'])}"
+        embed = discord.Embed(title=f"New tweet from {target.name}!",
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="API: some-random-api.com/canvas/misc/tweet")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+    @avatar_command_group.command(name="youtube", aliases=["comment"], description="What has this user commented?")
+    async def tweet_avatar_command(self, ctx, target: discord.Member, *, comment: str):
+        print(target)
+        url = f"https://some-random-api.com/canvas/youtube-comment"
+        url += f"?avatar={quote(target.avatar.url)}"
+        url += f"&comment={quote(comment)}"
+        url += f"&username={quote(target.name)}"
+        embed = discord.Embed(title=f"{target.name} commented",
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="API: some-random-api.com/canvas/misc/youtube-comment")
+        embed.set_image(url=url)
         await ctx.send(embed=embed)
 
 

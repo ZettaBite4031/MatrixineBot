@@ -2,10 +2,12 @@ import pathlib
 import random
 import datetime as dt
 import typing as t
+import requests
 
 import aiohttp
 import discord
 from discord.ext import commands
+from urllib.parse import quote
 
 
 def _count_generator(reader):
@@ -17,6 +19,7 @@ def _count_generator(reader):
 
 class Fun(commands.Cog):
     """Just random fun commands to add some personality"""
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -72,7 +75,7 @@ class Fun(commands.Cog):
         if not animal or animal not in choices:
             animal = random.choice(choices)
 
-        url = "https://some-random-api.ml/animal/{}".format(animal)
+        url = "https://some-random-api.com/animal/{}".format(animal)
         async with aiohttp.request("GET", url, headers={}) as resp:
             if resp.status != 200:
                 return await ctx.send("Hmm... Something went wrong.. Perhaps try again?")
@@ -103,13 +106,13 @@ class Fun(commands.Cog):
         if not animal or animal not in choices:
             animal = random.choice(choices)
 
-        url = "https://some-random-api.ml/img/{}".format(animal)
+        url = "https://some-random-api.com/img/{}".format(animal)
         async with aiohttp.request("GET", url, headers={}) as resp:
             if resp.status != 200:
                 return await ctx.send("Hmm... Something went wrong.. Perhaps try again?")
 
             data = await resp.json()
-            image = data["image"]
+            image = data["link"]
             embed = discord.Embed(title=f"{animal.capitalize().replace('_', ' ')} image!",
                                   color=self.bot.COLOR,
                                   timestamp=dt.datetime.utcnow())
@@ -150,7 +153,7 @@ class Fun(commands.Cog):
         if action is None or action not in choices:
             action = random.choice(choices)
 
-        url = "https://some-random-api.ml/animu/{}".format(action)
+        url = "https://some-random-api.com/animu/{}".format(action)
         async with aiohttp.request("GET", url, headers={}) as resp:
             if resp.status != 200:
                 return await ctx.send("Hmm... Something went wrong.. Perhaps try again?")
@@ -179,7 +182,7 @@ class Fun(commands.Cog):
 
     @commands.command(name="joke", description="Sends a joke. The devs are not reasonable for how cringe they are.")
     async def send_joke_command(self, ctx):
-        url = "https://some-random-api.ml/joke"
+        url = "https://some-random-api.com/joke"
         async with aiohttp.request("GET", url, headers={}) as resp:
             if resp.status != 200:
                 return await ctx.send("Hmm... Something went wrong.. Perhaps try again?")
@@ -197,7 +200,7 @@ class Fun(commands.Cog):
     @commands.command(name="pokedex", aliases=["pokemon"], description="Sends the information of a pokemon!")
     async def pokedex_command(self, ctx, pokemon: str):
         pokemon = pokemon.lower()
-        url = f"https://some-random-api.ml/pokedex?pokemon={pokemon}"
+        url = f"https://some-random-api.com/pokemon/pokedex?pokemon={pokemon}"
         async with aiohttp.request("GET", url, headers={}) as resp:
             if resp.status != 200:
                 return await ctx.send("Hmm... Something went wrong.. Perhaps try again?")
@@ -225,8 +228,6 @@ class Fun(commands.Cog):
             evolution_stage = family['evolutionStage']
             evolution_line = family['evolutionLine']
             sprites = data['sprites']
-            normal_img = sprites["normal"]
-            animated_img = sprites["animated"]
             description = data['description']
             generation = data["generation"]
 
@@ -247,15 +248,13 @@ class Fun(commands.Cog):
                 color=self.bot.COLOR,
                 timestamp=dt.datetime.utcnow()
             )
-            embed.set_image(url=normal_img)
-            embed.set_thumbnail(url=animated_img)
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
-            embed.set_footer(text=f"API: {url[8:][:26]}")
+            embed.set_footer(text=f"API: some-random-api.com/pokemon/pokedex")
             await ctx.send(embed=embed)
 
     @commands.command(name="meme", description="Sends meme pog")
     async def meme_command(self, ctx):
-        url = "https://some-random-api.ml/meme"
+        url = "https://some-random-api.com/meme"
         async with aiohttp.request("GET", url, headers={}) as resp:
             if resp.status != 200:
                 return await ctx.send("Hmm... Something went wrong.. Perhaps try again?")
@@ -273,7 +272,7 @@ class Fun(commands.Cog):
                       description="Generates a completely random, unreproducible *fake* bot token.")
     async def generate_bot_token_command(self, ctx):
         seed = random.SystemRandom().randint(ctx.author.id, ctx.author.id * 10)
-        url = f"https://some-random-api.ml/bottoken?id={seed}"
+        url = f"https://some-random-api.com/bottoken?id={seed}"
         async with aiohttp.request("GET", url, headers={}) as resp:
             if resp.status != 200:
                 return await ctx.send("Hmm... Something went wrong.. Perhaps try again?")
@@ -294,8 +293,8 @@ class Fun(commands.Cog):
                               color=self.bot.COLOR,
                               timestamp=dt.datetime.utcnow())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
-        embed.set_footer(text="API: https://some-random-api.ml/canvas/colorviewer")
-        embed.set_image(url=f"https://some-random-api.ml/canvas/colorviewer?hex={hexadecimal.replace('0x', '')}")
+        embed.set_footer(text="API: https://some-random-api.com/canvas/colorviewer")
+        embed.set_image(url=f"https://some-random-api.com/canvas/colorviewer?hex={hexadecimal.replace('0x', '')}")
         await ctx.send(embed=embed)
 
     @commands.command(name="lines", description="Displays the number of lines in the bot's source code.")
@@ -333,6 +332,71 @@ class Fun(commands.Cog):
                 embed.add_field(name="", value="", inline=True)
 
         await ctx.send(embed=embed)
+
+    @commands.command(name="color_viewer", description="Generates a picture of the specified color")
+    async def color_viewer_command(self, ctx, color: str):
+        try:
+            color = hex(int(color.strip("0x"), 16))
+        except ValueError:
+            return await ctx.send("Please supply valid hexadecimal! (0xFFFFFF)")
+
+        url = f"https://some-random-api.com/canvas/misc/colorviewer?hex={color}&avatar=".replace("0x", "")
+        embed = discord.Embed(title=str(color),
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text=f"API: some-random-api.com/canvas/misc/colorviewer")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+    @commands.command(name="nobitches", description="Returns the no bitches meme but with a custom message")
+    async def no_bitches_command(self, ctx, *, msg: str):
+        url = f"https://some-random-api.com/canvas/misc/nobitches?no={quote(msg)}"
+        embed = discord.Embed(title=msg,
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="API: some-random-api.com/canvas/misc/nobitches")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+    @commands.command(name="oogway", description="Share Master Oogway's wisdom")
+    async def oogway_command(self, ctx, *, msg: str):
+        url = "https://some-random-api.com/canvas/misc/oogway"
+        if random.randint(0, 5000) > 2500:
+            url += "2"
+        url += f"?quote={quote(msg)}"
+
+        embed = discord.Embed(title="Master Oogway's Wisdom",
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="API: some-random-api.com/canvas/misc/oogway")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+    @commands.command(name="dictionary", aliases=["definition"], description="An actual dictionary")
+    async def dictionary_command(self, ctx, word: str):
+        url = f"https://some-random-api.com/others/dictionary?word={word}"
+        data = requests.get(url=url).json()
+        response = f"The definition of the word \"{word}\" is as follows:\n{data['definition']}"
+        await ctx.reply(response)
+
+    @commands.command(name="binary", description="Encode or decode text to/from binary")
+    async def binary_text_command(self, ctx, option, *, content):
+        url = f"https://some-random-api.com/others/binary?{option}={quote(content)}"
+        data = requests.get(url).json()
+        index = "binary" if option == "encode" else "text"
+        response = f"{content}\n**=**\n{data[index]}"
+        await ctx.reply(response)
+
+    @commands.command(name="base64", description="Encode or decode text to/from base64")
+    async def binary_text_command(self, ctx, option, *, content):
+        url = f"https://some-random-api.com/others/base64?{option}={quote(content)}"
+        data = requests.get(url).json()
+        index = "base64" if option == "encode" else "text"
+        response = f"{content}\n**=**\n{data[index]}"
+        await ctx.reply(response)
 
 
 async def setup(bot):

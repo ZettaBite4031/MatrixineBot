@@ -8,12 +8,13 @@ from discord.ext import commands
 
 class Filters(commands.Cog):
     """Filter commands for a user's pfp."""
+
     def __init__(self, bot):
         self.bot = bot
 
     @commands.group(name="overlay",
-                      description="Adds overlays onto the specified user's avatar; "
-                                  "if none is provided, it will use the user's profile.")
+                    description="Adds overlays onto the specified user's avatar; "
+                                "if none is provided, it will use the user's profile.")
     async def overlay_group(self, ctx, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -29,7 +30,7 @@ class Filters(commands.Cog):
             embed.set_image(url=url)
             await ctx.send(embed=embed)
 
-    @overlay_group.command(name="gay")
+    @overlay_group.command(name="gay", description="Adds a gay filter")
     async def gay_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -42,7 +43,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="glass")
+    @overlay_group.command(name="glass", description="Adds a glass filter")
     async def glass_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -55,7 +56,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="wasted")
+    @overlay_group.command(name="wasted", description="Adds a GTA wasted filter")
     async def wasted_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -68,7 +69,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="passed")
+    @overlay_group.command(name="passed", description="Adds a GTA mission passed filter")
     async def passed_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -81,7 +82,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="jail")
+    @overlay_group.command(name="jail", description="Adds a jail filter")
     async def jail_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -94,7 +95,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="comrade")
+    @overlay_group.command(name="comrade", description="Adds a soviet flag filter")
     async def comrade_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -107,7 +108,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="triggered")
+    @overlay_group.command(name="triggered", description="Adds a triggered filter")
     async def triggered_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -120,7 +121,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="filter")
+    @overlay_group.command(name="filter", description="Adds a random filter")
     async def filter_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -135,7 +136,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="greyscale")
+    @overlay_group.command(name="greyscale", description="Adds a greyscale filter")
     async def greyscale_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -148,7 +149,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="invert")
+    @overlay_group.command(name="invert", description="Inverts the colors")
     async def invert_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -161,7 +162,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="invertgreyscale")
+    @overlay_group.command(name="invertgreyscale", description="Inverts the colors and adds a greyscale filter")
     async def invertgreyscale_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -174,7 +175,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="sepia")
+    @overlay_group.command(name="sepia", description="Adds a sepia filter")
     async def sepia_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -187,7 +188,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="red")
+    @overlay_group.command(name="red", description="Adds a red filter")
     async def red_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -200,7 +201,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="green")
+    @overlay_group.command(name="green", description="Adds a green filter")
     async def green_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -213,7 +214,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="blue")
+    @overlay_group.command(name="blue", description="Adds a blue filter")
     async def blue_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -226,7 +227,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="blurple")
+    @overlay_group.command(name="blurple", description="Adds a blurple filter")
     async def blurple_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -239,7 +240,7 @@ class Filters(commands.Cog):
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
-    @overlay_group.command(name="blurple2")
+    @overlay_group.command(name="blurple2", description="Adds a different blurple filter")
     async def blurple2_overlay(self, ctx: commands.Context, target: t.Optional[discord.User]):
         if target is None:
             target = ctx.author
@@ -249,6 +250,56 @@ class Filters(commands.Cog):
                               timestamp=dt.datetime.utcnow())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/blurple2")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+    @overlay_group.command(name="brightness", description="Brightens your avatar")
+    async def brightness_overlay(self, ctx, brightness: t.Optional[float], target: t.Optional[discord.Member]):
+        target = target or ctx.author
+        url = ("https://some-random-api.com/canvas/filter/brightness?avatar="
+               f"{target.avatar.replace(format='png', size=1024)}")
+        if brightness:
+            url += f"&brightness={brightness}"
+
+        embed = discord.Embed(title=target.display_name,
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text=f"API: some-random-api.com/canvas/filter/brightness")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+    @overlay_group.command(name="tint", description="Adds a specified tint")
+    async def tint_overylay(self, ctx, tint: str, target: t.Optional[discord.Member]):
+        target = target or ctx.author
+        try:
+            tint = hex(int(tint.strip("0x"), 16))
+        except ValueError:
+            return await ctx.send("Please supply valid hexadecimal! (0xFFFFFF)")
+
+        url = (f"https://some-random-api.com/canvas/color?color={str(tint)}&avatar="
+               f"{target.avatar.replace(format='png', size=1024)}").replace("0x", "")
+        embed = discord.Embed(title=target.display_name,
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text=f"API: some-random-api.com/canvas/color")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+    @overlay_group.command(name="threshold", description="Thresholds your avatar")
+    async def brightness_overlay(self, ctx, threshold: t.Optional[float], target: t.Optional[discord.Member]):
+        target = target or ctx.author
+        url = ("https://some-random-api.com/canvas/filter/threshold?avatar="
+               f"{target.avatar.replace(format='png', size=1024)}")
+        if threshold:
+            url += f"&threshold={threshold}"
+
+        embed = discord.Embed(title=target.display_name,
+                              color=self.bot.COLOR,
+                              timestamp=dt.datetime.utcnow())
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
+        embed.set_footer(text=f"API: some-random-api.com/canvas/filter/threshold")
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 

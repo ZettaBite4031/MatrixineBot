@@ -15,7 +15,7 @@ def syntax(command):
             params.append(f"[{k}]" if "NoneType" in str(v) else f"<{k}>")
 
     params = " ".join(params)
-    return f'`{cmd_and_aliases} {f" {params}" if params != "" else ""}`'
+    return f'`{cmd_and_aliases}{f" {params}" if params != "" else ""}`'
 
 
 class HelpMenu(ListPageSource):
