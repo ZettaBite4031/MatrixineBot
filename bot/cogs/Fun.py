@@ -86,7 +86,7 @@ class Fun(commands.Cog):
             embed = discord.Embed(title=f"{animal.capitalize()} fact!",
                                   description=f"**{fact}**",
                                   color=self.bot.COLOR,
-                                  timestamp=dt.datetime.utcnow())
+                                  timestamp=dt.datetime.now())
             embed.set_image(url=image)
             embed.set_footer(text=f"API: {url[8:]}")
             await ctx.send(embed=embed)
@@ -115,7 +115,7 @@ class Fun(commands.Cog):
             image = data["link"]
             embed = discord.Embed(title=f"{animal.capitalize().replace('_', ' ')} image!",
                                   color=self.bot.COLOR,
-                                  timestamp=dt.datetime.utcnow())
+                                  timestamp=dt.datetime.now())
             embed.set_image(url=image)
             embed.set_footer(text=f"API: {url[8:]}")
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
@@ -138,7 +138,7 @@ class Fun(commands.Cog):
             quote = data["q"]
             author = data["a"]
             embed = discord.Embed(description="{}".format(quote), color=self.bot.COLOR,
-                                  timestamp=dt.datetime.utcnow())
+                                  timestamp=dt.datetime.now())
             embed.set_author(name="Quote: ", icon_url=ctx.author.avatar.url)
             embed.set_footer(text="Quote by {}".format(author))
             await ctx.send(embed=embed)
@@ -174,7 +174,7 @@ class Fun(commands.Cog):
             gif = data["link"]
             embed = discord.Embed(title=title,
                                   color=self.bot.COLOR,
-                                  timestamp=dt.datetime.utcnow())
+                                  timestamp=dt.datetime.now())
             embed.set_image(url=gif)
             embed.set_footer(text=f"API: {url[8:]}")
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
@@ -192,7 +192,7 @@ class Fun(commands.Cog):
             embed = discord.Embed(title="You asked for this.",
                                   description=joke,
                                   color=self.bot.COLOR,
-                                  timestamp=dt.datetime.utcnow())
+                                  timestamp=dt.datetime.now())
             embed.set_footer(text=f"API: {url[8:]}")
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
             await ctx.send(embed=embed)
@@ -246,7 +246,7 @@ class Fun(commands.Cog):
                 title=name.capitalize(),
                 description=description,
                 color=self.bot.COLOR,
-                timestamp=dt.datetime.utcnow()
+                timestamp=dt.datetime.now()
             )
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
             embed.set_footer(text=f"API: some-random-api.com/pokemon/pokedex")
@@ -262,7 +262,7 @@ class Fun(commands.Cog):
             data = await resp.json()
             embed = discord.Embed(title=f"**{data['caption']}**",
                                   color=self.bot.COLOR,
-                                  timestamp=dt.datetime.utcnow())
+                                  timestamp=dt.datetime.now())
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
             embed.set_footer(text=f"API: {url[8:]}")
             embed.set_image(url=data["image"])
@@ -281,7 +281,7 @@ class Fun(commands.Cog):
             embed = discord.Embed(title="Bot Token",
                                   description=f"Here is your generated bot token!\n{data['token']}",
                                   color=self.bot.COLOR,
-                                  timestamp=dt.datetime.utcnow())
+                                  timestamp=dt.datetime.now())
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
             embed.set_footer(text=f"*These tokens are all fake.* API: {url[8:26]}")
             await ctx.send(embed=embed)
@@ -291,7 +291,7 @@ class Fun(commands.Cog):
     async def hex_to_color_command(self, ctx, hexadecimal: str):
         embed = discord.Embed(title=hexadecimal,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: https://some-random-api.com/canvas/colorviewer")
         embed.set_image(url=f"https://some-random-api.com/canvas/colorviewer?hex={hexadecimal.replace('0x', '')}")
@@ -314,7 +314,7 @@ class Fun(commands.Cog):
 
         embed = discord.Embed(title=f"{self.bot.BOT_INFO.name} source code length!",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="Bot developed by " + self.bot.OWNER_USERNAME)
         embed.set_thumbnail(url=self.bot.user.avatar.url)
@@ -343,7 +343,7 @@ class Fun(commands.Cog):
         url = f"https://some-random-api.com/canvas/misc/colorviewer?hex={color}&avatar=".replace("0x", "")
         embed = discord.Embed(title=str(color),
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/misc/colorviewer")
         embed.set_image(url=url)
@@ -354,7 +354,7 @@ class Fun(commands.Cog):
         url = f"https://some-random-api.com/canvas/misc/nobitches?no={quote(msg)}"
         embed = discord.Embed(title=msg,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/nobitches")
         embed.set_image(url=url)
@@ -369,7 +369,7 @@ class Fun(commands.Cog):
 
         embed = discord.Embed(title="Master Oogway's Wisdom",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/oogway")
         embed.set_image(url=url)

@@ -24,7 +24,7 @@ class Filters(commands.Cog):
             url = f"https://some-random-api.com/canvas/{overlay}?avatar={target.avatar.replace(format='png', size=1024)}"
             embed = discord.Embed(title=target.display_name,
                                   color=self.bot.COLOR,
-                                  timestamp=dt.datetime.utcnow())
+                                  timestamp=dt.datetime.now())
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
             embed.set_footer(text=f"API: some-random-api.com/canvas/{overlay}")
             embed.set_image(url=url)
@@ -37,7 +37,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/gay?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/gay")
         embed.set_image(url=url)
@@ -50,7 +50,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/glass?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/glas")
         embed.set_image(url=url)
@@ -63,7 +63,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/wasted?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/wasted")
         embed.set_image(url=url)
@@ -76,7 +76,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/passed?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/passed")
         embed.set_image(url=url)
@@ -89,7 +89,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/jail?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/jail")
         embed.set_image(url=url)
@@ -102,7 +102,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/comrade?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/comrade")
         embed.set_image(url=url)
@@ -115,7 +115,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/triggered?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/triggered")
         embed.set_image(url=url)
@@ -130,7 +130,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/{filter}?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=f"{target.display_name} {filter.capitalize()}",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/{filter}")
         embed.set_image(url=url)
@@ -143,7 +143,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/greyscale?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/greyscale")
         embed.set_image(url=url)
@@ -156,7 +156,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/invert?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/invert")
         embed.set_image(url=url)
@@ -169,7 +169,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/invertgreyscale?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/invertgreyscale")
         embed.set_image(url=url)
@@ -182,7 +182,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/sepia?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/sepia")
         embed.set_image(url=url)
@@ -195,7 +195,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/red?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/red")
         embed.set_image(url=url)
@@ -208,7 +208,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/green?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/green")
         embed.set_image(url=url)
@@ -221,7 +221,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/blue?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/blue")
         embed.set_image(url=url)
@@ -234,7 +234,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/blurple?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/blurple")
         embed.set_image(url=url)
@@ -247,7 +247,7 @@ class Filters(commands.Cog):
         url = f"https://some-random-api.com/canvas/blurple2?avatar={target.avatar.replace(format='png', size=1024)}"
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/blurple2")
         embed.set_image(url=url)
@@ -263,7 +263,7 @@ class Filters(commands.Cog):
 
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/filter/brightness")
         embed.set_image(url=url)
@@ -281,7 +281,7 @@ class Filters(commands.Cog):
                f"{target.avatar.replace(format='png', size=1024)}").replace("0x", "")
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/color")
         embed.set_image(url=url)
@@ -297,7 +297,7 @@ class Filters(commands.Cog):
 
         embed = discord.Embed(title=target.display_name,
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"API: some-random-api.com/canvas/filter/threshold")
         embed.set_image(url=url)

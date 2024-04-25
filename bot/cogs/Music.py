@@ -214,7 +214,7 @@ class Player(wavelink.Player):
                 )
             ),
             color=self.bot.COLOR,
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.now()
         )
         embed.set_author(name="Search results", icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"Queried by {ctx.author.display_name}", icon_url=self.bot.user.avatar.url)
@@ -445,7 +445,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             title="Queue",
             description=f"Showing up to {show:,} track(s)",
             color=self.bot.COLOR,
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.now()
         )
         embed.set_author(name="Queue Results", icon_url=self.bot.user.avatar.url)
         embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url)
@@ -495,7 +495,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         embed = discord.Embed(
             title="Current Track",
             color=self.bot.COLOR,
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.now()
         )
         embed.set_author(name="Track Info", icon_url=self.bot.user.avatar.url, url=player.queue.current_track.uri)
         embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url)

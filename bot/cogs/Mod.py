@@ -60,7 +60,7 @@ class Mod(commands.Cog):
             title=msg,
             description=f"{ctx.author.mention} had {msg}:\n{banned}",
             color=discord.Color.random(seed=colorAvg),
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.now()
         )
         embed.set_author(name=f"{ctx.author.name}#{ctx.author.discriminator}",
                          icon_url=ctx.author.avatar_url)
@@ -82,7 +82,7 @@ class Mod(commands.Cog):
                         f"**Reason:** {reason or 'not banned from bot'}\n"
                         f"**Responsible moderator:** {moderator.mention or 'not banned from bot'}",
             color=self.bot.COLOR,
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.now()
         )
         embed.set_footer(text=f"ID: {user.id}")
         embed.set_author(icon_url=moderator.avatar.url or "", name=moderator.name or "Not banned from bot")
@@ -109,7 +109,7 @@ class Mod(commands.Cog):
             title=msg,
             description=f"{ctx.author.mention} had {msg}:\n{unbanned}",
             color=discord.Color.random(seed=ctx.author.id),
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.now()
         )
         embed.set_author(name=f"{ctx.author.name}#{ctx.author.discriminator}",
                          icon_url=ctx.author.avatar_url)
@@ -131,7 +131,7 @@ class Mod(commands.Cog):
                         f"**Reason:** {reason or 'not unbanned from bot'}\n"
                         f"**Responsible moderator:** {moderator.mention or 'not unbanned from bot'}",
             color=self.bot.COLOR,
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.now()
         )
         embed.set_footer(text=f"ID: {user.id}")
         embed.set_author(icon_url=moderator.avatar.url or "", name=moderator.name or "Not banned from bot")
@@ -193,7 +193,7 @@ class Mod(commands.Cog):
             title=msg,
             description=f"{ctx.author.mention} had {msg}:\n{muted}",
             color=self.bot.COLOR,
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.now()
         )
         embed.set_author(name=f"{ctx.author.name}#{ctx.author.discriminator}",
                          icon_url=ctx.author.avatar_url)
@@ -225,7 +225,7 @@ class Mod(commands.Cog):
             title=msg,
             description=f"{ctx.author.mention} had {msg}:\n{unmuted}",
             color=self.bot.COLOR,
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.now()
         )
         embed.set_author(name=f"{ctx.author.name}#{ctx.author.discriminator}",
                          icon_url=ctx.author.avatar_url)

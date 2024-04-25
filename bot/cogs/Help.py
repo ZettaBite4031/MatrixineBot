@@ -74,7 +74,7 @@ class Help(commands.Cog):
                 description=f"Use `{prefix}help module` to gain more information about that module!"
                             f"\nThe prefix is case insensitive.",
                 colour=self.bot.COLOR,
-                timestamp=dt.datetime.utcnow()
+                timestamp=dt.datetime.now()
             )
             embed.set_thumbnail(url=self.bot.user.avatar.url)
             embed.set_footer(text=f"Requested by {ctx.author.display_name}")
@@ -104,7 +104,7 @@ class Help(commands.Cog):
                         title=f"Help {cog}!",
                         description=f"{self.bot.cogs[cog].__doc__ if self.bot.cogs[cog].__doc__ else 'No description.'}\n",
                         colour=self.bot.COLOR,
-                        timestamp=dt.datetime.utcnow()
+                        timestamp=dt.datetime.now()
                     )
                     embed.set_thumbnail(url=self.bot.user.avatar.url)
                     embed.set_footer(text=f"Requested by {ctx.author.display_name}")

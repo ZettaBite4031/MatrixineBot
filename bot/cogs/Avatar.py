@@ -90,7 +90,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="Blur!",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/blur")
         embed.set_image(url="https://some-random-api.com/canvas/misc/blur/?avatar="
@@ -104,7 +104,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="Pixelate!",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_image(
             url="https://some-random-api.com/canvas/misc/pixelate?avatar="
@@ -118,7 +118,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="SIMP!",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/simpcard")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/simpcard?avatar={target.avatar.url}")
@@ -131,7 +131,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="Horny.",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/horny")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/horny?avatar={target.avatar.url}")
@@ -144,7 +144,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="Lolice!",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/lolice")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/lolice?avatar={target.avatar.url}")
@@ -157,7 +157,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="G A Y!",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/lgbt")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/lgbt?avatar={target.avatar.url}")
@@ -170,7 +170,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="Pan 🍳",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/pansexual")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/pansexual?avatar={target.avatar.url}")
@@ -183,7 +183,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="Nonbinary",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/nonbinary")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/nonbinary?avatar={target.avatar.url}")
@@ -196,7 +196,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="Lesbian",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/lesbian")
         embed.set_image(
@@ -210,7 +210,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="Bisexual",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/bisexual")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/bisexual?avatar={target.avatar.url}")
@@ -223,7 +223,7 @@ class Avatar(commands.Cog):
 
         embed = discord.Embed(title="Transgender",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/transgender")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/transgender?avatar={target.avatar.url}")
@@ -234,7 +234,7 @@ class Avatar(commands.Cog):
         target = target or ctx.author
         embed = discord.Embed(title="Snip! Cropped to a circle!",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/circle")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/circle?avatar={target.avatar.url}")
@@ -245,7 +245,7 @@ class Avatar(commands.Cog):
         target = target or ctx.author
         embed = discord.Embed(title="It's so stupid!",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/its-so-stupid")
         embed.set_image(url=f"https://some-random-api.com/canvas/misc/its-so-stupid?avatar={target.avatar.url}")
@@ -256,7 +256,7 @@ class Avatar(commands.Cog):
         target = target or ctx.author
         embed = discord.Embed(title="Liar!",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         url = (f"https://some-random-api.com/canvas/misc/lied?avatar={target.avatar.url}"
                f"&username={target.name}").replace(" ", "-")
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
@@ -271,7 +271,7 @@ class Avatar(commands.Cog):
                f"&birthday={target.created_at.strftime('%Y/%m/%d %H:%M:%S')}&username={target.name}")
         embed = discord.Embed(title="Gayshit Infact",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/namecard")
         embed.set_image(url=url.replace(" ", "%20"))
@@ -283,7 +283,7 @@ class Avatar(commands.Cog):
         url = f"https://some-random-api.com/canvas/misc/spin?avatar={target.avatar.url}"
         embed = discord.Embed(title="Spin",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/spin")
         embed.set_image(url=url)
@@ -295,7 +295,7 @@ class Avatar(commands.Cog):
         url = f"https://some-random-api.com/canvas/misc/tonikawa?avatar={target.avatar.url}"
         embed = discord.Embed(title="D V D",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/tonikawa")
         embed.set_image(url=url)
@@ -315,7 +315,7 @@ class Avatar(commands.Cog):
         url += f"&theme={r.choice(['light', 'dim', 'dark'])}"
         embed = discord.Embed(title=f"New tweet from {target.name}!",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/tweet")
         embed.set_image(url=url)
@@ -330,7 +330,7 @@ class Avatar(commands.Cog):
         url += f"&username={quote(target.name)}"
         embed = discord.Embed(title=f"{target.name} commented",
                               color=self.bot.COLOR,
-                              timestamp=dt.datetime.utcnow())
+                              timestamp=dt.datetime.now())
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text="API: some-random-api.com/canvas/misc/youtube-comment")
         embed.set_image(url=url)

@@ -37,7 +37,7 @@ class Leveling(commands.Cog):
                                                            old_level, new_level)
 
         embed = discord.Embed(title=embed_settings["title"], description=embed_settings["desc"],
-                              timestamp=dt.datetime.utcnow(), color=embed_settings["color"])
+                              timestamp=dt.datetime.now(), color=embed_settings["color"])
 
         if thumbnail := embed_settings["thumbnail"]:
             embed.set_thumbnail(url=thumbnail)
@@ -78,7 +78,7 @@ class Leveling(commands.Cog):
 
         lock_time = dt.datetime.strptime(member["lock_time"], "%Y-%m-%dT%H:%M:%SZ")
 
-        if lock_time < dt.datetime.utcnow():
+        if lock_time < dt.datetime.now():
             await self.add_xp(msg, result)
 
         elif lock_time < dt.datetime.now(pytz.utc):
@@ -252,7 +252,7 @@ class Leveling(commands.Cog):
         ]
 
         embed = discord.Embed(title="Level Up Embed Customization Information",
-                              color=self.bot.COLOR, timestamp=dt.datetime.utcnow())
+                              color=self.bot.COLOR, timestamp=dt.datetime.now())
         for n, v, i in fields:
             embed.add_field(name=n, value=v, inline=i)
         embed.set_author(name=ctx.author.display_name)
@@ -342,8 +342,8 @@ class Leveling(commands.Cog):
         lvl = member["level"]
         lock_time = dt.datetime.strptime(member["lock_time"], "%Y-%m-%dT%H:%M:%SZ")
 
-        if lock_time > dt.datetime.utcnow():
-            current_date = dt.datetime.utcnow()
+        if lock_time > dt.datetime.now():
+            current_date = dt.datetime.now()
             time_until = lock_time - current_date
             locked = f"User is xp locked until {time_until}"
         else:
@@ -351,7 +351,7 @@ class Leveling(commands.Cog):
 
         embed = discord.Embed(title=f"{target.display_name}'s level",
                               description=f"XP: {xp}\nLevel: {lvl}\n{locked}",
-                              color=self.bot.COLOR, timestamp=dt.datetime.utcnow())
+                              color=self.bot.COLOR, timestamp=dt.datetime.now())
 
         embed.set_footer(text=f"Leveling system developed by {self.bot.OWNER_USERNAME}")
         embed.set_author(name=ctx.author.display_name)
@@ -376,7 +376,7 @@ class Leveling(commands.Cog):
 
             member = members[str(target.id)]
             lock_time = dt.datetime.strptime(member["lock_time"], "%Y-%m-%dT%H:%M:%SZ")
-            if lock_time < dt.datetime.utcnow():
+            if lock_time < dt.datetime.now():
                 return await ctx.send(f"{target.mention} isn't xp locked")
             lock_delta = lock_time - dt.datetime.now(pytz.utc)
 

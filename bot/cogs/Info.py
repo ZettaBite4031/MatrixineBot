@@ -23,7 +23,7 @@ class Info(commands.Cog):
 
         embed = discord.Embed(
             title=f"{target.display_name} information",
-            timestamp=dt.datetime.utcnow(),
+            timestamp=dt.datetime.now(),
             colour=target.colour
         )
         embed.set_author(name=f"Requested by {ctx.author.display_name}", url=ctx.author.avatar.url)
@@ -89,7 +89,7 @@ class Info(commands.Cog):
         embed = discord.Embed(
             title="**Server Information**",
             color=self.bot.COLOR,
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.now()
         )
 
         embed.set_author(name=name, icon_url=ctx.author.avatar.url)

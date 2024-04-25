@@ -11,8 +11,8 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 
 class Matrixine(commands.Bot):
-    def __init__(self):
-        self.TOKEN = os.getenv("TOKEN")
+    def __init__(self, TOKEN: str):
+        self.TOKEN = TOKEN
         self.COLOR = 0x1EACC4
         self.OWNER_ID = [901689854411300904]
         self.OWNER_USERNAME = "zettabitep"
