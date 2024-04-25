@@ -13,7 +13,6 @@ from pixelsort import pixelsort as pxs
 
 class Avatar(commands.Cog):
     """Some interesting commands to mess around with a user's profile picture!"""
-
     def __init__(self, bot):
         self.bot = bot
 
@@ -25,13 +24,13 @@ class Avatar(commands.Cog):
         async with ctx.typing():
             re = requests.get(f"{target.avatar.url}".replace("webp", "png").replace("gif", "png"))
             img = Image.open(io.BytesIO(re.content))
-            glitch = pxs(img, lower_threshold=0.1, upper_threshold=0.85, sorting_function="saturation", randomness=1)
+            glitch = pxs(img, lower_threshold=0.1, upper_threshold=0.85, sorting_function="saturation", randomness=10)
             img_bin = io.BytesIO()
             glitch.save(img_bin, "PNG")
             img_bin.seek(0)
             await ctx.send(
                 "Here is your a̶̩͇͛̎̽̉̉̚v̷̞͖̣͊̇̆͆͘ą̴̪͈͚̓̊̎͌̽͆̀͒̎̽͒̉̕͘͜ţ̸̲̗͇̯̼̱̱͊͗̋͆̋͐͘a̶̓͗̅͒͑̈́̾͜͝r̸̬̪̬͊̀",
-                file=discord.File(fp=img_bin, filename="image.txt"))
+                file=discord.File(fp=img_bin, filename="image.png"))
 
     @commands.command(name="sort", description="Sorts the user's pfp.\nThere are 5 sort choices: Lightness, Hue, "
                                                "Intensity, Minimum, and Saturation.\nThresholds describe the bounds of "

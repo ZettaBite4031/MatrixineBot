@@ -79,7 +79,6 @@ class Matrixine(commands.Bot):
             raise exc.original
         raise exc
 
-
     async def on_ready(self):
         await self.loop.create_task(self.setup())
         await self.change_presence(activity=discord.Game("music | m!help"))

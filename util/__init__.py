@@ -12,6 +12,7 @@ from discord.ext import commands
 from discord.utils import get
 
 TIME_REGEX = r"((?P<weeks>\d+)w)?((?P<days>\d+)d)?((?P<hours>\d+)h)?((?P<minutes>\d+)m)?((?P<seconds>\d+)s)?"
+DATETIME_FORMAT_STRING = "%Y-%m-%dT%H:%M:%SZ"
 
 
 async def url_to_discord_file(url, file_name="image.txt"):
@@ -90,7 +91,7 @@ def time_string_formatted_string(time_string):
         time_string: str
             Converts the string to the designated time in the future.
     """
-    return timedelta_to_datetime(time_string_to_timedelta(time_string)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return timedelta_to_datetime(time_string_to_timedelta(time_string)).strftime(DATETIME_FORMAT_STRING)
 
 
 def time_string_to_datetime(time_string):
