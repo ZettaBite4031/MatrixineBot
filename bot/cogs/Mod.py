@@ -151,19 +151,6 @@ class Mod(commands.Cog):
             deleted = await ctx.channel.purge(limit=count + 1, check=_check)
         await ctx.send(f"{len(deleted) - 1} messages were purged from the channel")
 
-        if not (result := self.guilds.find_one(ctx.guild.id)):
-            return
-        if not (deleted_message_channel_id := result["data"]["log"]["deleted_message_channel"]):
-            return
-        deleted_message_channel = self.bot.get_channel(int(deleted_message_channel_id))
-
-        deleted_messages = [(f"({msg.id} {msg.author.name}) {msg.author.display_name}: {msg.content} "
-                             f"{' '.join([attachment.url for attachment in msg.attachments])}") for msg in deleted]
-        log_message = "\n".join(deleted_messages)
-        text_file = io.StringIO(log_message)
-        text_file = discord.File(fp=text_file, filename=f"{ctx.channel.name}_{len(deleted)}_purged_messages.txt")
-        await deleted_message_channel.send(f"{len(deleted)} messaged purged from {ctx.channel.mention}", file=text_file)
-
     @commands.command(name="mute", aliases=["timeout"],
                       description="Times out the mentioned users. Can accept multiple users at once")
     @commands.has_permissions(manage_roles=True)

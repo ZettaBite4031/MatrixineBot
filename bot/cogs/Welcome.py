@@ -1,3 +1,4 @@
+import time
 import typing as t
 import datetime as dt
 import re
@@ -122,14 +123,17 @@ class Welcomer(commands.Cog):
         await self.bot.wait_until_ready()
         if not (result := self.guilds.find_one(member.guild.id)):
             return
-        await member.edit(roles=(member.guild.get_role(id_) for id_ in result['data']['join']['auto_roles']))
+
         if not (welcome_message := str(result['data']['join']['welcome_message'])):
             return
         if not (welcome_channel_id := result['data']['join']['welcome_channel']):
             return
         welcome_channel = member.guild.get_channel(int(welcome_channel_id))
         welcome_message = util.personalize_message(member, welcome_message, welcome_channel)
-        await welcome_channel.send(welcome_message)
+        await welcome_channel.send(welcome_message) if welcome_channel else None
+        if not (autoroles := result['data']['join']['auto_roles']):
+            return
+        await member.edit(roles=[member.guild.get_role(int(id_)) for id_ in autoroles])
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
@@ -143,7 +147,7 @@ class Welcomer(commands.Cog):
             return
         leave_channel = member.guild.get_channel(int(leave_channel_id))
         leave_message = util.personalize_message(member, leave_message, leave_channel)
-        await leave_channel.send(leave_message)
+        await leave_channel.send(leave_message) if leave_channel else None
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):

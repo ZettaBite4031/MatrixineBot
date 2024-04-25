@@ -38,8 +38,8 @@ class Info(commands.Cog):
                   ("Playing", f"{activity.name if activity else 'Nothing'}\n"
                               f"{activity.details if hasattr(activity, 'details') else ''}\n"
                               f"{activity.state if hasattr(activity, 'state') else ''}", True),
-                  ("Created on", target.created_at.strftime("%Y-%m-%d\n%H:%M:%S"), True),
-                  ("Joined on", target.joined_at.strftime("%Y-%m-%d\n%H:%M:%S"), True),
+                  ("Created on", target.created_at.strftime("%Y/%m/%d\n%H:%M:%S"), True),
+                  ("Joined on", target.joined_at.strftime("%Y/%m/%d\n%H:%M:%S"), True),
                   ("Boost", bool(target.premium_since), True)]
 
         for n, v, i in fields:

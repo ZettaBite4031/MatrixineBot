@@ -53,6 +53,7 @@ class Matrixine(commands.Bot):
         self.log("Running Bot...")
         super().run(token=kwargs["token"], reconnect=True)
 
+
     async def close(self):
         self.log("Closing connection to Discord...")
         self.MONGO_CLUSTER.close()
