@@ -237,29 +237,124 @@ class Logger(commands.Cog):
             if title:
                 title += "Update"
                 embed.title = title
+                embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
+                embed.set_author(name="User update event!", icon_url=before.guild.icon.url)
                 await general_update_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_guild_channel_create(self, channel: discord.abc.GuildChannel):
-        pass
+        if not (result := self.guilds.find_one(channel.guild.id)):
+            return
+        if not (logs := result["data"]["log"]):
+            return
+        if not (channel_create_channel_id := logs["channel_create_channel"]):
+            return
+        channel_create_channel = self.bot.get_channel(int(channel_create_channel_id))
+        embed = discord.Embed(title="Channel created!",
+                              description=f"A new channel has been created: {channel.mention}\n"
+                                          f"Name: {channel.name}\n"
+                                          f"Category: {channel.category or 'No category'}\n"
+                                          f"ID: {channel.id}\n"
+                                          f"Type: {str(channel.type).title()}")
+        embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
+        embed.set_author(name=f"Channel creation event in {channel.guild.name}", icon_url=channel.guild.icon.url)
+        await channel_create_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, channel: discord.abc.GuildChannel):
-        pass
+        if not (result := self.guilds.find_one(channel.guild.id)):
+            return
+        if not (logs := result["data"]["log"]):
+            return
+        if not (channel_delete_channel_id := logs["channel_delete_channel"]):
+            return
+        channel_delete_channel = self.bot.get_channel(int(channel_delete_channel_id))
+        embed = discord.Embed(title="Channel deleted!",
+                              description=f"A channel has been deleted!\n"
+                                          f"Name: {channel.name}\n"
+                                          f"Category: {channel.category or 'No category'}\n"
+                                          f"ID: {channel.id}\n"
+                                          f"Type: {str(channel.type).title()}")
+        embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
+        embed.set_author(name=f"Channel deletion event in {channel.guild.name}", icon_url=channel.guild.icon.url)
+        await channel_delete_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_guild_channel_update(self, before: discord.abc.GuildChannel, after: discord.abc.GuildChannel):
-        pass
+        if not (result := self.guilds.find_one(before.guild.id)):
+            return
+        if not (logs := result["data"]["log"]):
+            return
+        if not (channel_update_channel_id := logs["channel_update_channel"]):
+            return
+        channel_update_channel = self.bot.get_channel(int(channel_update_channel_id))
+
+        title = ""
+        embed = discord.Embed(color=self.bot.COLOR, timestamp=dt.datetime.now())
+        _and = False
+        if before.name != after.name:
+            _and = True
+            title += "Name "
+            embed.add_field(name="Original", value=before.name, inline=True)
+            embed.add_field(name="Current", value=after.name, inline=True)
+            embed.add_field(name="", value="", inline=True)
+
+        if before.category != after.category:
+            title += "Category "
+            embed.add_field(name="Original", value=before.category, inline=True)
+            embed.add_field(name="Current", value=after.category, inline=True)
+            embed.add_field(name="", value="", inline=True)
+
+        if before.position != after.position:
+            if _and:
+                title += "and "
+            title += "Position "
+            embed.add_field(name="Original", value=before.position, inline=True)
+            embed.add_field(name="Current", value=after.position, inline=True)
+            embed.add_field(name="", value="", inline=True)
+
+        if title:
+            title += "Update"
+            embed.title = title
+            embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
+            embed.set_author(name=f"Channel deletion event in {before.guild.name}", icon_url=before.guild.icon.url)
+            await channel_update_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
                                     after: discord.VoiceState):
-        pass
+        if not (result := self.guilds.find_one(member.guild.id)):
+            return
+        if not (logs := result["data"]["log"]):
+            return
+        if not (voice_update_channel_id := logs["voice_update_channel"]):
+            return
+        voice_update_channel = self.bot.get_channel(int(voice_update_channel_id))
+        description = ""
+        if before.channel is None and after.channel is not None:
+            description = f"{member.mention} ({member.id}) has joined {after.channel.mention}."
+
+            # Check if the member left a voice channel
+        if before.channel is not None and after.channel is None:
+            description = f"{member.mention} ({member.id}) has left  {before.channel.mention}."
+
+            # Check if the member switched voice channels
+        if before.channel is not None and after.channel is not None and before.channel.id != after.channel.id:
+            description = f"{member.mention} ({member.id}) has left {before.channel} and joined {after.channel}."
+
+        if description:
+            embed = discord.Embed(title="Voice State Update", description=description,
+                                  color=self.bot.COLOR, timestamp=dt.datetime.now())
+
+            embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
+            guild = (before.channel or after.channel).guild
+            embed.set_author(name=f"Channel deletion event in {guild.name}", icon_url=guild.icon.url)
+            await voice_update_channel.send(embed=embed)
 
     @commands.command(name="log")
     @commands.is_owner()
     async def log_test(self, ctx):
-        await self.on_member_update(ctx.author, ctx.author)
+        await self.on_guild_channel_update(ctx.channel, self.bot.STDOUT)
 
 
 async def setup(bot):
