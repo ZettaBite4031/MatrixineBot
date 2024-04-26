@@ -301,10 +301,12 @@ class Fun(commands.Cog):
     async def lines_of_code_command(self, ctx):
         cogs = [p.stem for p in pathlib.Path(".").glob("./bot/cogs/*.py")]
         total = 11
+        cog_dict = dict()
         for cog in cogs:
             with open(f"./bot/cogs/{cog}.py", 'rb') as fp:
                 c_generator = _count_generator(fp.raw.read)
                 count = sum(buffer.count(b'\n') for buffer in c_generator)
+                cog_dict[cog] = count
                 total += count
 
         with open("./bot/bot.py", 'rb') as fp:
@@ -321,15 +323,11 @@ class Fun(commands.Cog):
         embed.add_field(name="Total length:", value=f"`{total}` lines of code!", inline=False)
         embed.add_field(name="Main File:", value=f"`{main_count}` lines of code", inline=False)
         embed.add_field(name="**Modules**", value="** **", inline=False)
-        for cog in cogs:
-            with open(f"./bot/cogs/{cog}.py", 'rb') as fp:
-                c_generator = _count_generator(fp.raw.read)
-                count = sum(buffer.count(b'\n') for buffer in c_generator)
-                embed.add_field(name=cog.capitalize(), value=f"`{count}` lines.", inline=True)
+        for cog, count in cog_dict.items():
+            embed.add_field(name=cog.capitalize(), value=f"`{count}` lines.", inline=True)
 
-        if num := (len(embed.fields) % 7):
-            for _ in range(num):
-                embed.add_field(name="", value="", inline=True)
+        for _ in range(len(embed.fields) % 3):
+            embed.add_field(name="", value="", inline=True)
 
         await ctx.send(embed=embed)
 

@@ -15,7 +15,7 @@ class Matrixine(commands.Bot):
         self.COLOR = 0x1EACC4
         self.OWNER_ID = [901689854411300904]
         self.OWNER_USERNAME = "zettabitep"
-        self.VERSION = "0.0.1"
+        self.VERSION = "0.1.0b"
         self.PREFIX = "M!"
         self.API_BASE = "https://discord.com/api/v9/"
         self.AIOHTTP_SESSION = aiohttp.ClientSession()

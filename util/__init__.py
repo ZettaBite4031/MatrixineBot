@@ -163,3 +163,69 @@ def ordinal_suffix(n):
             suffix = "th"
 
     return f"{n}{suffix}"
+
+
+PERMISSION_DICT = {
+    "Read Messages": "Allows members to view channels by default (excluding private channels).",
+    "Manage Channels": "Allows members to create, edit, or delete channels.",
+    "Manage Roles": "Allows members to create new roles and edit/delete roles lower than their highest. "
+                    "Also allows members to change permissions of channels they have access to.",
+    "Create Expressions": "Allows members to add custom emojis, stickers, and sounds in this server.",
+    "Manage Expressions": "Allows members to edit/remove custom emojis, stickers, and sounds in this server.",
+    "View Audit Log": "Allows members to view a record of who made which changes in this server.",
+    "Manage Webhooks": "Allows members to create, edit, or delete webhooks, "
+                       "which can post messages from other apps or sites into this server.",
+    "Manage Guild": "Allows members to change the server's name, voice region, view all invites, "
+                    "add apps (bots) to this server and create/update AutoMod rules.",
+    "Create Instant Invite": "Allows members to invite new people to this server.",
+    "Change Nickname": "Allows members to change their own nickname, a custom name just for this server.",
+    "Manage Nickname": "Allows members to change the nicknames of other members.",
+    "Kick Members": "Allows members to remove other members from this server. "
+                    "Kicked members will be able to rejoin if they have another invite.",
+    "Ban Members": "Allows members to permanently ban and delete the message history of other members from this server.",
+    "Moderate Members": "Allows members to timeout users. Timed out users will not be able to send messages in chat, "
+                        "reply within threads, react to messages, or speak in voice channels.",
+    "Send Messages": "Allows members to send messages in text channels.",
+    "Send Messages In Threads": "Allows members to send messages in threads.",
+    "Create Public Threads": "Allows members to create threads that everyone in a channel can view.",
+    "Create Private Threads": "Allows members to create invite-only threads.",
+    "Embed Links": "Allows links that members share to show embedded content in text channels.",
+    "Attach Files": "Allows members to upload files and other media in text channels.",
+    "Add Reactions": "Allows members to add new emoji reactions to a message.",
+    "External Emojis": "Allows members to use emojis from other servers, if they're a Discord Nitro member.",
+    "External Stickers": "Allows members to use stickers from other servers, if they're a Discord Nitro member.",
+    "Mention Everyone": "Allows members to use @everyone or @here. They can also @mention all roles, "
+                        "even if the role's \"Allow anyone to mention this role\" is disabled",
+    "Manage Messages": "Allows members to delete messages by other members or pin any message.",
+    "Manage Threads": "Allows members to rename, delete, close, edit slow-mode for threads. "
+                      "They can also view all private threads.",
+    "Read Message History": "Allows members to read previous messages sent in channels. "
+                            "If this permission is disabled, members only see messages sent when they are online, "
+                            "and focused in that channel.",
+    "Send Tts Messages": "Allows members to send text-to-speech messages by starting a message with /tts. "
+                         "These messages can be heard by anyone focused on that channel.",
+    "Use Application Commands": "Allows members to use commands from applications (bots), "
+                                "including slash commands and context menu commands.",
+    "Send Voice Messages": "Allows members to send voice messages",
+    "Create Polls": "Allows members to create polls.",
+    "Connect": "Allows members to join voice channels and hear others",
+    "Speak": "Allows members to talk in voice channels. If this permission is disabled, members are default muted"
+             "until someone with the \"Mute Members\" permission un-mutes them.",
+    "Stream": "Allows members to share their video, screen share, or stream a game in this server.",
+    "Use Embedded Activities": "Allows members to use Activities in this server.",
+    "Use Soundboard": "Allows members to send sounds from server soundboard.",
+    "Use External Sounds": "Allows members to use sounds from other servers, if they're a Discord Nitro member.",
+    "Use Voice Activation": "Allows members to speak in voice channels by simply talking. If this is disabled, "
+                            "members are required to use push-to-talk.",
+    "Priority Speaker": "Allows members to be more easily heard in voice channels. When activated, the volume of "
+                        "others without permission will be automatically lowered.",
+    "Mute Members": "Allows members to mute other members in voice channels for everyone.",
+    "Deafen Members": "Allows members to deafen other members in voice channels, which means they won't be able to "
+                      "speak or hear others.",
+    "Move Members": "Allows members to disconnect or move other members between voice channels.",
+    "Set Voice Channel Status": "Allows members to create and edit voice channel status.",
+    "Create Events": "Allows members to create events.",
+    "Manage Events": "Allows members to edit/cancel events.",
+    "Administrator": "Members with this permission will have every permission and will also bypass all channel specific"
+                     " permissions or restrictions.\n__**THIS IS A DANGEROUS PERMISSION TO GRANT**__"
+}

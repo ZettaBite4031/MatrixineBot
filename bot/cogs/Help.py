@@ -65,7 +65,7 @@ class Help(commands.Cog):
 
     @commands.command(name="help", aliases=["h"], description="Shows this message")
     async def show_help(self, ctx, module: t.Optional[str], *, command: t.Optional[str]):
-        prefix = "M!"
+        prefix = self.bot.MONGO_DB["Guilds"].find_one(ctx.guild.id)["server_prefix"]
 
         # Module not supplied
         if not module:
@@ -77,9 +77,10 @@ class Help(commands.Cog):
                 timestamp=dt.datetime.now()
             )
             embed.set_thumbnail(url=self.bot.user.avatar.url)
-            embed.set_footer(text=f"Requested by {ctx.author.display_name}")
-            embed.add_field(name="About", value=f"*Matrixine* is developed in Discord.py v1.7.3 by {self.bot.OWNER_USERNAME}\n\
-                                                            *{self.bot.BOT_INFO.name}* is running on {self.bot.VERSION}",
+            embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url)
+            embed.add_field(name="About", value=f"*{self.bot.BOT_INFO.name}* is developed in Discord.py v1.7.3 "
+                                                f"by `{self.bot.OWNER_USERNAME}`\n*{self.bot.BOT_INFO.name}* "
+                                                f"is running on {self.bot.VERSION}",
                             inline=False)
             value = []
             for cog in self.bot.cogs:

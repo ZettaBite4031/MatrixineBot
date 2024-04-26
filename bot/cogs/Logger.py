@@ -1,15 +1,12 @@
 import io
 import json
-import random as r
-import typing as t
 import datetime as dt
-import math
 import os
 
 from dateutil.relativedelta import relativedelta
 
 import discord
-import pytz
+import discord.flags
 from discord.ext import commands
 
 import util
@@ -17,7 +14,6 @@ import util
 
 class Logger(commands.Cog):
     """Handles logging events and commands"""
-
     def __init__(self, bot):
         self.bot = bot
         self.guilds = self.bot.MONGO_DB["Guilds"]
@@ -185,17 +181,125 @@ class Logger(commands.Cog):
         await deleted_message_channel.send(embed=embed, file=discord.File(fp=bytes_data, filename="purge.json"))
         os.remove("purge.json")
 
+    def permission_string_from_list(self, perms: list[str]) -> str:
+        ret = ""
+        perm_dict = dict()
+        for perm in util.PERMISSION_DICT.keys():
+            perm_dict[perm] = util.PERMISSION_DICT[perm] if perm in perms else None
+        i = 0
+        ret += "```"
+        for k, v in perm_dict.items():
+            if not v:
+                continue
+            i += 1
+            ret += f"{k} - "
+            if (i % 2) == 0:
+                ret = ret[:-2]
+                ret += "\n"
+        ret += "```"
+        return ret
+
+    def permission_string(self, role: discord.Role) -> (str, list[str]):
+        enabled_permissions = [perm.replace("_", " ").title() for perm, value in role.permissions if value]
+        return self.permission_string_from_list(enabled_permissions), enabled_permissions
+
     @commands.Cog.listener()
     async def on_guild_role_create(self, role: discord.Role):
-        pass
+        if not (result := self.guilds.find_one(role.guild.id)):
+            return
+        if not (logs := result["data"]["log"]):
+            return
+        if not (role_create_channel_id := logs["role_create_channel"]):
+            return
+        role_create_channel = self.bot.get_channel(int(role_create_channel_id))
+
+        enabled_permissions = [perm.replace("_", " ").title() for perm, value in role.permissions if value]
+        embed = discord.Embed(title="Role created",
+                              description=f"**Name**: {role.mention}\n"
+                                          f"**ID**: {role.id}\n**Color**: {hex(role.color.value)}\n"
+                                          f"**Position**: {role.position}\n"
+                                          f"**{len(enabled_permissions)} Permissions**:\n```",
+                              color=role.color,
+                              timestamp=dt.datetime.now())
+        embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
+        embed.set_author(name="Role creation event", icon_url=role.guild.icon.url)
+
+        embed.description += self.permission_string(role)
+
+        if "Administrator" in enabled_permissions:
+            warning = "⚠**!WARNING!**⚠\nADMINISTRATOR IS ENABLED FOR THIS ROLE\n\n"
+            warning += embed.description
+            embed.description = warning
+        await role_create_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_guild_role_delete(self, role: discord.Role):
-        pass
+        if not (result := self.guilds.find_one(role.guild.id)):
+            return
+        if not (logs := result["data"]["log"]):
+            return
+        if not (role_delete_channel_id := logs["role_delete_channel"]):
+            return
+        role_delete_channel = self.bot.get_channel(int(role_delete_channel_id))
+
+        enabled_permissions = [perm.replace("_", " ").title() for perm, value in role.permissions if value]
+        embed = discord.Embed(title="Role deleted",
+                              description=f"**Name**: {role.name}\n"
+                                          f"**ID**: {role.id}\n**Color**: {hex(role.color.value)}\n"
+                                          f"**Position**: {role.position}\n"
+                                          f"**{len(enabled_permissions)} Permissions**:\n```",
+                              color=role.color,
+                              timestamp=dt.datetime.now())
+        embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
+        embed.set_author(name="Role deletion event", icon_url=role.guild.icon.url)
+
+        embed.description += self.permission_string(role)
+
+        await role_delete_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_guild_role_update(self, before: discord.Role, after: discord.Role):
-        pass
+        if not (result := self.guilds.find_one(before.guild.id)):
+            return
+        if not (logs := result["data"]["log"]):
+            return
+        if not (role_edited_channel_id := logs["role_edited_channel"]):
+            return
+        role_edited_channel = self.bot.get_channel(int(role_edited_channel_id))
+        before_permission_string, before_permissions = self.permission_string(before)
+        after_permission_string, after_permissions = self.permission_string(after)
+
+        description = ""
+        if after.name != before.name:
+            description = f"**Name**: {before.name} -> {after.mention}"
+        else:
+            description = f"**Name**: {after.name}"
+        description += f"\n**ID**: {after.id}\n"
+        if after.color.value != before.color.value:
+            description += f"**Color**: {hex(before.color.value)} -> {hex(after.color.value)}"
+        else:
+            description += f"**Color**: {hex(after.color.value)}"
+        if after.position != before.position:
+            pos = "Moved up" if after.position > before.position else "Moved down"
+            description += f"\n**Position**: {before.position} -> {after.position} | {pos}\n"
+        else:
+            description += f"\n**Position**: {after.position}\n"
+
+        if not (changed_perms := list(set(after_permissions) ^ set(before_permissions))):
+            description += f"No permissions changed"
+        else:
+            description += (f"**{len(changed_perms)} Permissions changed:**\n"
+                            f"{self.permission_string_from_list(changed_perms)}")
+            if "Administrator" in changed_perms:
+                warning = "⚠**!WARNING!**⚠\nADMINISTRATOR IS ENABLED FOR THIS ROLE\n\n"
+                warning += description
+                description = warning
+
+        embed = discord.Embed(title="Role edited", description=description,
+                              color=after.color, timestamp=dt.datetime.now())
+        embed.set_author(name="Role changed event", icon_url=after.guild.icon.url)
+        embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
+        await role_edited_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
@@ -207,39 +311,46 @@ class Logger(commands.Cog):
             return
         if not (logs := result["data"]["log"]):
             return
+        if not (member_general_update_channel_id := logs["member_general_update_channel"]):
+            return
+        general_update_channel = self.bot.get_channel(int(member_general_update_channel_id))
 
-        if member_general_update_channel_id := logs["member_general_update_channel"]:
-            general_update_channel = self.bot.get_channel(int(member_general_update_channel_id))
+        title = ""
+        embed = discord.Embed(color=self.bot.COLOR, timestamp=dt.datetime.now())
+        _and = False
+        if before.name != after.name:
+            _and = True
+            title += "Username "
+            embed.add_field(name="Original", value=before.name, inline=True)
+            embed.add_field(name="Current", value=after.name, inline=True)
+            embed.add_field(name="", value="", inline=True)
 
-            title = ""
-            embed = discord.Embed(color=self.bot.COLOR, timestamp=dt.datetime.now())
-            _and = False
-            if before.name != after.name:
-                _and = True
-                title += "Username "
-                embed.add_field(name="Original", value=before.name, inline=True)
-                embed.add_field(name="Current", value=after.name, inline=True)
-                embed.add_field(name="", value="", inline=True)
+        if before.display_name != after.display_name:
+            title += "Nickname "
+            embed.add_field(name="Original", value=before.display_name, inline=True)
+            embed.add_field(name="Current", value=after.display_name, inline=True)
+            embed.add_field(name="", value="", inline=True)
 
-            if before.display_name != after.display_name:
-                title += "Nickname "
-                embed.add_field(name="Original", value=before.display_name, inline=True)
-                embed.add_field(name="Current", value=after.display_name, inline=True)
-                embed.add_field(name="", value="", inline=True)
+        if before.guild_avatar.url != after.guild_avatar.url:
+            if _and:
+                title += "and "
+            title += "Server Profile Picture "
+            embed.set_thumbnail(url=before.guild_avatar.url)
+            embed.set_image(url=after.guild_avatar.url)
 
-            if before.avatar.url != after.avatar.url:
-                if _and:
-                    title += "and "
-                title += "Profile Picture "
-                embed.set_thumbnail(url=before.avatar.url)
-                embed.set_image(url=after.avatar.url)
+        elif before.avatar.url != after.avatar.url:
+            if _and:
+                title += "and "
+            title += "Profile Picture "
+            embed.set_thumbnail(url=before.avatar.url)
+            embed.set_image(url=after.avatar.url)
 
-            if title:
-                title += "Update"
-                embed.title = title
-                embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
-                embed.set_author(name="User update event!", icon_url=before.guild.icon.url)
-                await general_update_channel.send(embed=embed)
+        if title:
+            title += "Update"
+            embed.title = title
+            embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
+            embed.set_author(name="User update event!", icon_url=before.guild.icon.url)
+            await general_update_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_guild_channel_create(self, channel: discord.abc.GuildChannel):
@@ -350,11 +461,6 @@ class Logger(commands.Cog):
             guild = (before.channel or after.channel).guild
             embed.set_author(name=f"Channel deletion event in {guild.name}", icon_url=guild.icon.url)
             await voice_update_channel.send(embed=embed)
-
-    @commands.command(name="log")
-    @commands.is_owner()
-    async def log_test(self, ctx):
-        await self.on_guild_channel_update(ctx.channel, self.bot.STDOUT)
 
 
 async def setup(bot):
