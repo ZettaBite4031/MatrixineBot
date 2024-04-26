@@ -323,8 +323,9 @@ class Fun(commands.Cog):
         embed.add_field(name="Total length:", value=f"`{total}` lines of code!", inline=False)
         embed.add_field(name="Main File:", value=f"`{main_count}` lines of code", inline=False)
         embed.add_field(name="**Modules**", value="** **", inline=False)
-        for cog, count in cog_dict.items():
-            embed.add_field(name=cog.capitalize(), value=f"`{count}` lines.", inline=True)
+        cog_dict_keys = sorted(cog_dict.keys(), key=lambda k: cog_dict[k], reverse=True)
+        for cog in cog_dict_keys:
+            embed.add_field(name=cog.capitalize(), value=f"`{cog_dict[cog]}` lines.", inline=True)
 
         for _ in range(len(embed.fields) % 3):
             embed.add_field(name="", value="", inline=True)

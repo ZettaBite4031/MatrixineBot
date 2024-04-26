@@ -105,7 +105,8 @@ class Matrixine(commands.Bot):
         ctx = await self.get_context(msg, cls=commands.Context)
 
         if ctx.command is not None:
-            self.log(f"Processing command, '{ctx.command}', from {ctx.guild.name} ({ctx.guild.id})")
+            self.log(f"Processing command, '{ctx.command.name}', "
+                     f"from {ctx.guild.name} ({ctx.guild.id})")
             await self.invoke(ctx)
 
     async def on_message(self, msg):

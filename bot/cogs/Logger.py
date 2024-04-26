@@ -2,6 +2,7 @@ import io
 import json
 import datetime as dt
 import os
+import typing as t
 
 from dateutil.relativedelta import relativedelta
 
@@ -123,6 +124,8 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
+        if not message.content:
+            return
         if not (result := self.guilds.find_one(message.guild.id)):
             return
         if not (logs := result["data"]["log"]):
@@ -311,9 +314,9 @@ class Logger(commands.Cog):
             return
         if not (logs := result["data"]["log"]):
             return
-        if not (member_general_update_channel_id := logs["member_general_update_channel"]):
+        if not (member_update_channel_id := logs["member_update_channel"]):
             return
-        general_update_channel = self.bot.get_channel(int(member_general_update_channel_id))
+        member_update_channel = self.bot.get_channel(int(member_update_channel_id))
 
         title = ""
         embed = discord.Embed(color=self.bot.COLOR, timestamp=dt.datetime.now())
@@ -350,7 +353,7 @@ class Logger(commands.Cog):
             embed.title = title
             embed.set_footer(text=f"Logging developed by {self.bot.OWNER_USERNAME}", icon_url=self.bot.user.avatar.url)
             embed.set_author(name="User update event!", icon_url=before.guild.icon.url)
-            await general_update_channel.send(embed=embed)
+            await member_update_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_guild_channel_create(self, channel: discord.abc.GuildChannel):
@@ -461,6 +464,144 @@ class Logger(commands.Cog):
             guild = (before.channel or after.channel).guild
             embed.set_author(name=f"Channel deletion event in {guild.name}", icon_url=guild.icon.url)
             await voice_update_channel.send(embed=embed)
+
+    async def log_channel_update(self, ctx: commands.Context, log_channel_entry: str, channel: t.Optional[discord.TextChannel]):
+        if not (result := self.guilds.find_one(ctx.guild.id)):
+            return
+        if not (logs := result["data"]["log"]):
+            return
+        if (log_channel_id := logs[log_channel_entry]) and not channel:
+            log_channel: discord.TextChannel = self.bot.get_channel(int(log_channel_id))
+            return await ctx.send(f"This server's current {util.LOG_NAME_DICT[log_channel_entry]} is {log_channel.mention}")
+        if not (log_channel_id or channel):
+            return await ctx.send(f"This server does not have a {util.LOG_NAME_DICT[log_channel_entry]}")
+        self.guilds.update_one({"_id": ctx.guild.id}, {"$set": {f"data.log.{log_channel_entry}": str(channel.id)}})
+        await ctx.send(f"Alright, the server's new {util.LOG_NAME_DICT[log_channel_entry]} is {channel.mention}")
+
+    async def log_integer_update(self, ctx: commands.Context, log_entry: str, age: t.Optional[int]):
+        if not (result := self.guilds.find_one(ctx.guild.id)):
+            return
+        if not (logs := result["data"]["log"]):
+            return
+        if (curr_age := logs[log_entry]) and not age:
+            return await ctx.send(f"This server's current {util.LOG_NAME_DICT[log_entry]} is {curr_age}")
+        if not (curr_age or age):
+            return await ctx.send(f"This server does not have a {util.LOG_NAME_DICT[log_entry]}")
+        self.guilds.update_one({"_id": ctx.guild.id}, {"$set": {f"data.log.{log_entry}": age}})
+        await ctx.send(f"Alright, the server's new {util.LOG_NAME_DICT[log_entry]} is {age}")
+
+    @commands.group(name="logs", description="Command group for all the log channels")
+    @commands.has_permissions(manage_guild=True)
+    async def log_group(self, ctx):
+        if not ctx.invoked_subcommand:
+            await ctx.reply("Please specify a subcommand!")
+
+    @log_group.group(name="member", description="Command group for all member log channels")
+    async def log_member_group(self, ctx):
+        if not ctx.invoked_subcommand:
+            await ctx.reply("Please specify a subcommand!")
+
+    @log_member_group.command(name="join", description="Sets the member join log channel")
+    async def set_join_log_command(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "member_joined_channel", channel)
+
+    @log_member_group.command(name="leave", description="Sets the member leave log channel")
+    async def set_leave_log_command(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "member_left_channel", channel)
+
+    @log_member_group.command(name="updated", description="Sets the member info changed channel")
+    async def set_member_update_channel(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "member_update_channel", channel)
+
+    @log_member_group.command(name="account_age", description="Sets how long precise dates are showed with new accounts")
+    async def set_leave_log_command(self, ctx, age: t.Optional[int]):
+        await self.log_integer_update(ctx, "new_account_age", age)
+
+    @log_group.group(name="message", description="Command group for all message log channels")
+    async def log_message_group(self, ctx):
+        if not ctx.invoked_subcommand:
+            await ctx.reply("Please specify a subcommand!")
+
+    @log_message_group.command(name="deleted", description="Sets the message deleted log channel")
+    async def set_del_msg_log_command(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "deleted_message_channel", channel)
+
+    @log_message_group.command(name="edited", description="Sets the message edited log channel")
+    async def set_edit_msg_log_command(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "edited_message_channel", channel)
+
+    @log_group.group(name="role", description="Command group for all role log channels")
+    async def log_role_group(self, ctx):
+        if not ctx.invoked_subcommand:
+            await ctx.reply("Please specify a subcommand!")
+
+    @log_role_group.command(name="created", description="Sets the role created channel")
+    async def set_role_create_log_command(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "role_create_channel", channel)
+
+    @log_role_group.command(name="edited", description="Sets the role edited channel")
+    async def set_role_edited_log_command(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "role_edited_channel", channel)
+
+    @log_role_group.command(name="deleted", description="Sets the role deleted channel")
+    async def set_role_delete_log_command(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "role_delete_channel", channel)
+
+    @log_group.group(name="mod", description="Command group for all mod action log channels")
+    async def log_mod_group(self, ctx):
+        if not ctx.invoked_subcommand:
+            await ctx.reply("Please specify a subcommand!")
+
+    @log_mod_group.command(name="ban", description="Sets the ban log channel")
+    async def set_mod_ban_channel(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "mod_ban_channel", channel)
+
+    @log_mod_group.command(name="kick", description="Sets the kick log channel")
+    async def set_mod_kick_channel(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "mod_kick_channel", channel)
+
+    @log_mod_group.command(name="mute", description="Sets the mute log channel")
+    async def set_mod_mute_channel(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "mod_mute_channel", channel)
+
+    @log_mod_group.command(name="purge", description="Sets the purge log channel")
+    async def set_mod_purge_channel(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "mod_purge_channel", channel)
+
+    @log_group.group(name="channel", description="Command group for all channel log channels")
+    async def log_channel_group(self, ctx):
+        if not ctx.invoked_subcommand:
+            await ctx.reply("Please specify a subcommand!")
+
+    @log_channel_group.command(name="created", description="Sets the channel create log channel")
+    async def set_channel_create_log_command(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "channel_create_channel", channel)
+
+    @log_channel_group.command(name="edited", description="Sets the channel edited log channel")
+    async def set_channel_edited_log_command(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "channel_edit_channel", channel)
+
+    @log_channel_group.command(name="deleted", description="Sets the channel deleted log channel")
+    async def set_channel_delete_log_command(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "channel_delete_channel", channel)
+
+    @log_group.group(name="voice", description="Command group for the voice state update log channel")
+    async def log_voice_group(self, ctx):
+        if not ctx.invoked_subcommand:
+            await ctx.reply("Please specify a subcommand")
+
+    @log_voice_group.command(name="update", description="Sets the voice state update log channel")
+    async def set_voice_state_update_log_channel(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "voice_update_channel", channel)
+
+    @log_group.group(name="invite", description="Command group for the invite log channel")
+    async def log_invite_group(self, ctx):
+        if not ctx.invoked_subcommand:
+            await ctx.reply("Please specify a subcommand")
+
+    @log_invite_group.command(name="sent", description="Sets the invite log channel")
+    async def set_invite_sent_log_channel(self, ctx, channel: t.Optional[discord.TextChannel]):
+        await self.log_channel_update(ctx, "invite_sent_log-channel", channel)
 
 
 async def setup(bot):

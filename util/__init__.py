@@ -229,3 +229,22 @@ PERMISSION_DICT = {
     "Administrator": "Members with this permission will have every permission and will also bypass all channel specific"
                      " permissions or restrictions.\n__**THIS IS A DANGEROUS PERMISSION TO GRANT**__"
 }
+
+LOG_NAME_DICT = {
+    "member_joined_channel": "Member Join log",
+    "member_left_channel": "Member Leave log",
+    "member_ban_channel": "Member Ban log",
+    "deleted_message_channel": "Message Delete log",
+    "edited_message_channel": "Message Edited log",
+    "role_create_channel": "Role Created log",
+    "role_delete_channel": "Role Delete log",
+    "role_edited_channel": "Role Deleted log",
+    "member_general_update_channel": "Member Update log",
+    "channel_create_channel": "Channel Create log",
+    "channel_delete_channel": "Channel Delete log",
+    "voice_update_channel": "Voice State Update log",
+    "invite_sent_log_channel": "Invite log",
+    "new_account_age": "number of days the join/leave logs will show precisely how old the account is",
+    "ignored_channels": "Channels that do not get logged",
+    "ignored_roles": "Roles that do not get logged",
+}

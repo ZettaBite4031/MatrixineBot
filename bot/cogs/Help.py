@@ -98,7 +98,7 @@ class Help(commands.Cog):
                     menu = MenuPages(source=HelpMenu(ctx, list(self.bot.get_cog(cog).get_commands()), cog, self.bot),
                                      delete_message_after=True,
                                      timeout=60.0)
-                    await menu.start(ctx)
+                    return await menu.start(ctx)
 
                 elif not self.bot.get_cog(cog).get_commands():
                     embed = discord.Embed(
@@ -111,40 +111,35 @@ class Help(commands.Cog):
                     embed.set_footer(text=f"Requested by {ctx.author.display_name}")
                     embed.add_field(name="This module has no commands.",
                                     value="This module is purely functional and contains no commands.", inline=False)
-                    await ctx.send(embed=embed)
+                    return await ctx.send(embed=embed)
 
                 else:
-                    await ctx.send("That module doesn't have any commands")
+                    return await ctx.send("That module doesn't have any commands")
 
-            else:
-                if cmd := discord.utils.get(self.bot.commands, name=command):
-                    if isinstance(cmd, commands.Group):
-                        menu = MenuPages(source=HelpMenu(ctx, list(cmd.commands), cmd, self.bot),
-                                         delete_message_after=True,
-                                         timeout=60.0)
-                        await menu.start(ctx)
-                    else:
-                        await self.cmd_help(ctx, cmd)
-                else:
-                    if " " in command:
-                        group = command.split(" ")[0]
-                        subcommand = command.split(" ")[1]
-                        for cmd in self.bot.commands:
-                            if group in cmd.aliases or group in cmd.name:
-                                if not hasattr(cmd, "commands"):
-                                    return await ctx.send(f"{group} doesn't have any subcommands!")
-                                for subcmd in cmd.commands:
-                                    if subcmd.name == subcommand:
-                                        return await self.cmd_help(ctx, subcmd)
-                                return await ctx.send(f"{group} doesn't have any subcommands named {subcommand}")
-                    else:
-                        for cmd in self.bot.commands:
-                            if command in cmd.aliases or command in cmd.name:
-                                return await self.cmd_help(ctx, cmd)
-                    await ctx.send("That command does not exist")
+            if not (cmd := self.get_subcommand(command)):
+                return await ctx.send("I couldn't find that command!")
+            if isinstance(cmd, commands.Group):
+                menu = MenuPages(source=HelpMenu(ctx, list(cmd.commands), cmd, self.bot),
+                                 delete_message_after=True,
+                                 timeout=60.0)
+                return await menu.start(ctx)
+            return await self.cmd_help(ctx, cmd)
 
         elif cog not in self.bot.cogs:
             await ctx.send("That module does not exist.")
+
+    def get_subcommand(self, command):
+        parts = command.split(" ")
+        found_command = self.bot
+        for part in parts:
+            if isinstance(found_command, commands.Bot):
+                found_command = found_command.get_command(part)
+            elif isinstance(found_command, commands.Group):
+                found_command = found_command.get_command(part)
+            if not found_command:
+                return None
+
+        return found_command
 
 
 async def setup(bot):
