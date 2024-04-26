@@ -5,6 +5,7 @@ import discord
 from discord.ext.menus import MenuPages, ListPageSource
 from discord.ext import commands
 
+DENY_COGS = ["WebsiteUpkeep"]
 
 def syntax(command):
     cmd_and_aliases = "|".join([str(command), *command.aliases])
@@ -84,15 +85,17 @@ class Help(commands.Cog):
                             inline=False)
             value = []
             for cog in self.bot.cogs:
+                if cog in DENY_COGS:
+                    continue
                 value.append(
-                    f"`{cog}`: {self.bot.cogs[cog].__doc__ if self.bot.cogs[cog].__doc__ else 'No description'}")
+                    f"`{cog}`: {self.bot.cogs[cog].__doc__ or 'No description'}")
                 msg = "\n".join(value)
             embed.add_field(name="Modules", value=msg, inline=False)
             return await ctx.send(embed=embed)
 
         # Module supplied
         cog = module.capitalize()
-        if cog in self.bot.cogs:
+        if cog in self.bot.cogs and cog not in DENY_COGS:
             if not command:
                 if self.bot.get_cog(cog).get_commands():
                     menu = MenuPages(source=HelpMenu(ctx, list(self.bot.get_cog(cog).get_commands()), cog, self.bot),

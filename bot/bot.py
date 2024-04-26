@@ -1,4 +1,5 @@
-import enum
+import pprint
+import json
 import os
 import datetime as dt
 import pathlib as pl
@@ -53,7 +54,6 @@ class Matrixine(commands.Bot):
         self.log("Running Bot...")
         super().run(token=kwargs["token"], reconnect=True)
 
-
     async def close(self):
         self.log("Closing connection to Discord...")
         self.MONGO_CLUSTER.close()
@@ -88,7 +88,7 @@ class Matrixine(commands.Bot):
         await self.STDOUT.send(
             f"`{dt.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}` | Bot ready! Latency: {self.latency}.")
         self.log(f"Bot ready... Latency: {self.latency}")
-        # 24-48082
+        await self.get_bot_info()
 
     def prefix(self, bot, msg):
         result = self.MONGO_DB["Guilds"].find_one({"_id": msg.guild.id})
@@ -112,4 +112,43 @@ class Matrixine(commands.Bot):
     async def on_message(self, msg):
         if not msg.author.bot:
             await self.process_commands(msg)
+
+    def get_command_info(self, cmd):
+        command_info = {
+            "aliases": cmd.aliases,
+            "parameters": [param.name for param in cmd.clean_params.values()],
+            "description": cmd.description or "No description provided"
+        }
+
+        if isinstance(cmd, commands.Group):
+            subcommands_info = {}
+            for subcommand in cmd.commands:
+                subcommands_info[subcommand.name] = self.get_command_info(subcommand)
+
+            command_info["subcommands"] = subcommands_info
+
+        return command_info
+
+    def get_cog_info(self, cog: commands.Cog):
+        cog_info = {}
+
+        for cmd in cog.get_commands():
+            cog_info[cmd.name] = self.get_command_info(cmd)
+
+        return cog_info
+
+    async def get_bot_info(self):
+        bot_info = {
+            "name": self.user.name,
+            "color": str(hex(self.COLOR)).upper().replace("X", "x"),
+            "owner": (self.OWNER_USERNAME, self.OWNER_ID[0]),
+            "version": self.VERSION,
+            "cogs": {}
+        }
+
+        for cog_name, cog in self.cogs.items():
+            bot_info["cogs"][cog_name] = self.get_cog_info(cog)
+
+        with open("bot_info.json", "w") as fp:
+            json.dump(bot_info, fp, indent=2)
 
