@@ -1,3 +1,4 @@
+import asyncio
 import pprint
 import json
 import os
@@ -21,8 +22,8 @@ class Matrixine(commands.Bot):
         self.API_BASE = "https://discord.com/api/v9/"
         self.AIOHTTP_SESSION = aiohttp.ClientSession()
         self.APSCHEDULER = AsyncIOScheduler
-        self.MONGO_CLUSTER = MongoClient(os.getenv("MONGO_URI"))
-        self.MONGO_DB = self.MONGO_CLUSTER["MatrixineDB"]
+        self.MONGO_CLIENT = MongoClient(os.getenv("MONGO_URI"))
+        self.MONGO_DB = self.MONGO_CLIENT["MatrixineDB"]
         self.stdout_id = 1230708641481363538
         self.STDOUT = None
         self.BOT_INFO = None
@@ -41,7 +42,7 @@ class Matrixine(commands.Bot):
     def latency(self):
         return F"{super().latency * 1000:,.2f}ms"
 
-    async def setup(self):
+    async def setup_hook(self):
         self.log("Beginning Setup...")
 
         for cog in self._cogs:
@@ -56,7 +57,7 @@ class Matrixine(commands.Bot):
 
     async def close(self):
         self.log("Closing connection to Discord...")
-        self.MONGO_CLUSTER.close()
+        self.MONGO_CLIENT.close()
         await self.AIOHTTP_SESSION.close()
         await super().close()
 
@@ -80,7 +81,6 @@ class Matrixine(commands.Bot):
         raise exc
 
     async def on_ready(self):
-        await self.loop.create_task(self.setup())
         await self.change_presence(activity=discord.Game("music | m!help"))
         self.BOT_INFO = await self.application_info()
         self.CLIENT_ID = self.BOT_INFO.id

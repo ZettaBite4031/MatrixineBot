@@ -79,7 +79,7 @@ class Help(commands.Cog):
             )
             embed.set_thumbnail(url=self.bot.user.avatar.url)
             embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url)
-            embed.add_field(name="About", value=f"*{self.bot.BOT_INFO.name}* is developed in Discord.py v1.7.3 "
+            embed.add_field(name="About", value=f"*{self.bot.BOT_INFO.name}* is developed in Discord.py v2.3.2 "
                                                 f"by `{self.bot.OWNER_USERNAME}`\n*{self.bot.BOT_INFO.name}* "
                                                 f"is running on {self.bot.VERSION}",
                             inline=False)

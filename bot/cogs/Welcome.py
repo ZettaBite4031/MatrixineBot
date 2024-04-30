@@ -1,4 +1,3 @@
-import time
 import typing as t
 import datetime as dt
 import re
@@ -67,7 +66,7 @@ class Welcomer(commands.Cog):
         }
 
         self.guilds.insert_one({"_id": guild.id, "name": guild.name, "owner_id": guild.owner_id,
-                                "server_prefix": self.bot.PREFIX, "data": data})
+                                "server_prefix": self.bot.PREFIX, "blacklisted_channels": [], "data": data})
 
         member = {
             str(guild.owner_id): {
